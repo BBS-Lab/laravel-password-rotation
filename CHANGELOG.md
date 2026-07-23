@@ -2,6 +2,18 @@
 
 All notable changes to `laravel-password-rotation` will be documented in this file.
 
+## v1.1.0 - 2026-07-23
+
+The `password_histories` table now migrates automatically — no manual publish + migrate step. Backward compatible.
+
+### ✨ Changed
+
+- **Auto-run migration** — the `password_histories` table is created automatically on `php artisan migrate`; consumers (and the Nova/Filament twins) no longer need to publish it first. The migration guards against a double-create, so publishing it to customise the table still works.
+
+### 📚 Documentation
+
+- README and the Boost guideline updated to reflect the auto-run migration.
+
 ## v1.0.0 - 2026-07-23
 
 First release of the admin-panel-agnostic core behind the Nova and Filament password-rotation twins. Force any Laravel authenticatable to rotate its password on a schedule — no admin panel required.
