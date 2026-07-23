@@ -30,18 +30,19 @@ composer require bbs-lab/laravel-password-rotation
 
 The service provider auto-registers via Laravel package discovery.
 
-Publish the config, the password-history migration and the (review-before-run) user-column migration, then migrate:
+The `password_histories` table migrates automatically. Publish the config and the
+(review-before-run) user-column migration, then migrate:
 
 ```bash
 # Config
 php artisan vendor:publish --tag=laravel-password-rotation-config
 
-# password_histories table (reuse prevention)
-php artisan vendor:publish --tag=laravel-password-rotation-migrations
-
 # Adds the password_changed_at column to your authenticatable's table.
 # Rename/edit it first — your rotatable model rarely lives on "users".
 php artisan vendor:publish --tag=laravel-password-rotation-user-migration
+
+# Optional — only to customise the shipped password_histories migration
+# php artisan vendor:publish --tag=laravel-password-rotation-migrations
 
 # Translations (en, fr) — only to customise the messages
 php artisan vendor:publish --tag=laravel-password-rotation-translations

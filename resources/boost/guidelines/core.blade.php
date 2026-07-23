@@ -30,11 +30,11 @@ class User extends Authenticatable implements MustRotatePassword
 }
 ```
 
-Publish and run the migrations (the user-column migration is published, not auto-run — review
-and rename it, since your rotatable model rarely lives on the `users` table):
+The `password_histories` table migrates automatically. Publish the user-column migration
+(published, not auto-run — review and rename it, since your rotatable model rarely lives on
+the `users` table) and migrate:
 
 ```bash
-php artisan vendor:publish --tag=laravel-password-rotation-migrations
 php artisan vendor:publish --tag=laravel-password-rotation-user-migration
 php artisan migrate
 ```

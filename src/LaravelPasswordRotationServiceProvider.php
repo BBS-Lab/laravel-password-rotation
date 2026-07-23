@@ -22,6 +22,7 @@ class LaravelPasswordRotationServiceProvider extends PackageServiceProvider
             ->name('laravel-password-rotation')
             ->hasConfigFile('laravel-password-rotation')
             ->hasMigration('create_password_histories_table')
+            ->runsMigrations()
             ->hasCommand(PasswordRotationReport::class);
     }
 

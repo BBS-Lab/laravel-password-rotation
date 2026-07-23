@@ -10,6 +10,12 @@ return new class extends Migration
 {
     public function up(): void
     {
+        // The package auto-runs this migration; guard so a consumer that also
+        // publishes it (to customise the table) doesn't hit a double-create.
+        if (Schema::hasTable('password_histories')) {
+            return;
+        }
+
         Schema::create('password_histories', function (Blueprint $table): void {
             $table->id();
 
