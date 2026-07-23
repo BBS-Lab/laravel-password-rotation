@@ -1,0 +1,11 @@
+includes:
+    - phpstan-baseline.neon
+
+parameters:
+    level: 8
+    paths:
+        - src
+        # The RotatesPassword trait's only consumer is the workbench User model;
+        # analysing it keeps PHPStan from flagging the trait as unused.
+        - workbench/app/Models
+    tmpDir: build/phpstan

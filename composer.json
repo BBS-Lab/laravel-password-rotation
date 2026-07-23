@@ -1,0 +1,92 @@
+{
+    "name": "bbs-lab/laravel-password-rotation",
+    "description": "Password rotation for any Laravel app (no admin panel required): force any authenticatable to rotate its password every N days, with reuse prevention, a first-login gate, expiry warnings and a redirect middleware.",
+    "keywords": [
+        "bbs",
+        "laravel",
+        "password",
+        "password-rotation",
+        "password-expiration",
+        "security",
+        "middleware"
+    ],
+    "homepage": "https://github.com/BBS-Lab/laravel-password-rotation",
+    "support": {
+        "issues": "https://github.com/BBS-Lab/laravel-password-rotation/issues",
+        "source": "https://github.com/BBS-Lab/laravel-password-rotation"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mikaël Popowicz",
+            "email": "mikael.popowicz@big-boss-studio.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "illuminate/contracts": "^11.0 || ^12.0 || ^13.0",
+        "illuminate/support": "^11.0 || ^12.0 || ^13.0",
+        "spatie/laravel-package-tools": "^1.16"
+    },
+    "require-dev": {
+        "larastan/larastan": "^3.0",
+        "laravel/pint": "^1.18",
+        "nunomaduro/collision": "^8.0",
+        "orchestra/testbench": "^9.0 || ^10.0 || ^11.0",
+        "pestphp/pest": "^4.0",
+        "pestphp/pest-plugin-arch": "^4.0",
+        "pestphp/pest-plugin-laravel": "^4.0",
+        "pestphp/pest-plugin-mutate": "^4.0",
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan-deprecation-rules": "^2.0",
+        "phpstan/phpstan-phpunit": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "BBSLab\\LaravelPasswordRotation\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "BBSLab\\LaravelPasswordRotation\\Tests\\": "tests/",
+            "Workbench\\App\\": "workbench/app/",
+            "Workbench\\Database\\Factories\\": "workbench/database/factories/",
+            "Workbench\\Database\\Seeders\\": "workbench/database/seeders/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "BBSLab\\LaravelPasswordRotation\\LaravelPasswordRotationServiceProvider"
+            ]
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": "@php vendor/bin/testbench package:discover --ansi",
+        "build": "@php vendor/bin/testbench workbench:build --ansi",
+        "serve": [
+            "Composer\\Config::disableProcessTimeout",
+            "@build",
+            "@php vendor/bin/testbench serve --ansi"
+        ],
+        "analyse": "vendor/bin/phpstan analyse",
+        "test": "vendor/bin/pest",
+        "test-coverage": "XDEBUG_MODE=coverage vendor/bin/pest --coverage --min=100",
+        "test-mutation": "XDEBUG_MODE=coverage vendor/bin/pest --mutate --everything --covered-only --min=80",
+        "format": "vendor/bin/pint",
+        "lint": [
+            "@php vendor/bin/pint --ansi",
+            "@php vendor/bin/phpstan analyse --verbose --ansi"
+        ]
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

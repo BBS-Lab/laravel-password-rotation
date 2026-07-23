@@ -1,0 +1,23 @@
+laravel: '@testbench'
+
+providers:
+  - BBSLab\LaravelPasswordRotation\LaravelPasswordRotationServiceProvider
+  - Workbench\App\Providers\WorkbenchServiceProvider
+
+migrations:
+  # The package sets runsMigrations=false (the history table is published, not
+  # auto-run), so load it explicitly for the demo — same as the test suite does.
+  - database/migrations
+  - workbench/database/migrations
+
+workbench:
+  start: /login
+  discovers:
+    web: true
+  build:
+    - package:discover
+    - create-sqlite-db
+    - db:wipe
+    - migrate:refresh
+    - db:seed:
+        --class: 'Workbench\Database\Seeders\DatabaseSeeder'

@@ -1,0 +1,50 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Primary target: latest everything, enforces 100% coverage.
+          - { name: 'Laravel 13 / PHP 8.4', php: '8.4', extra: '', coverage: true }
+          # Laravel 13 on the lowest PHP it can be exercised on. Runtime floor is
+          # PHP 8.2, but Pest 4 (dev) requires 8.3, so 8.3 is the CI floor.
+          - { name: 'Laravel 13 / PHP 8.3', php: '8.3', extra: '', coverage: false }
+          # Laravel 12.
+          - { name: 'Laravel 12 / PHP 8.4', php: '8.4', extra: '--with=laravel/framework:^12.0 --with=orchestra/testbench:^10.0', coverage: false }
+          - { name: 'Laravel 12 / PHP 8.3', php: '8.3', extra: '--with=laravel/framework:^12.0 --with=orchestra/testbench:^10.0', coverage: false }
+          # Laravel 11 (lowest supported).
+          - { name: 'Laravel 11 / PHP 8.4', php: '8.4', extra: '--with=laravel/framework:^11.0 --with=orchestra/testbench:^9.0', coverage: false }
+          - { name: 'Laravel 11 / PHP 8.3', php: '8.3', extra: '--with=laravel/framework:^11.0 --with=orchestra/testbench:^9.0', coverage: false }
+
+    name: ${{ matrix.name }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, bcmath, intl, fileinfo, sqlite3, pdo_sqlite
+          coverage: pcov
+
+      - name: Install Composer dependencies
+        run: composer update ${{ matrix.extra }} --prefer-dist --no-interaction --no-progress
+
+      - name: Run tests
+        run: ${{ matrix.coverage && 'composer test-coverage' || 'vendor/bin/pest' }}
