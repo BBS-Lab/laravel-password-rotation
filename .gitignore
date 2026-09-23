@@ -1,7 +1,6 @@
 /build
 /vendor
 /node_modules
-composer.lock
 composer.phar
 auth.json
 phpunit.xml
