@@ -29,8 +29,6 @@ class PasswordRotationReport extends Command
             }
 
             foreach ($class::query()->lazy() as $model) {
-                assert($model instanceof MustRotatePassword);
-
                 $expired = $model->passwordHasExpired();
                 $expiresAt = $model->passwordExpiresAt();
                 $expiring = $model->passwordIsExpiring();
