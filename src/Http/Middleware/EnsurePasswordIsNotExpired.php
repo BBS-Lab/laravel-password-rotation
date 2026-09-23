@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace BBSLab\LaravelPasswordRotation\Http\Middleware;
 
 use BBSLab\LaravelPasswordRotation\Contracts\MustRotatePassword;
+use BBSLab\LaravelPasswordRotation\PasswordRotationManager;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,6 +32,12 @@ class EnsurePasswordIsNotExpired
         $user = auth()->user();
 
         if (! $user instanceof MustRotatePassword || ! $user->passwordHasExpired()) {
+            return $next($request);
+        }
+
+        // Host-registered escape hatch, evaluated only for a user we are about to
+        // redirect — e.g. SSO users whose password lives in the identity provider.
+        if (app(PasswordRotationManager::class)->shouldBypass($request, $user)) {
             return $next($request);
         }
 

@@ -10,6 +10,7 @@ No admin panel required — the Nova and Filament twins (`bbs-lab/nova-password-
 - **`MustRotatePassword`** (contract) + **`RotatesPassword`** (trait): opt any authenticatable model into rotation. Nothing is tied to `User`.
 - **`PasswordHistory`**: polymorphic model storing the last N password hashes for reuse checks.
 - **`EnsurePasswordIsNotExpired`**: middleware that redirects an expired user to your change screen.
+- **`PasswordRotation`** (facade over `PasswordRotationManager`): runtime config point. `PasswordRotation::bypass(fn (Request $r) => ...)` registers a callback that exempts a request from the forced rotation (e.g. SSO users). Register it in code (never in config — a closure breaks `config:cache`); the request is exempt as soon as any callback returns `true`.
 - **`PasswordNotReused`**: validation rule rejecting the current password plus the last N.
 - **expired vs expiring**: `passwordHasExpired()` is past the window; `passwordIsExpiring()` is inside the `warn_days` warning window.
 - All config lives under the `laravel-password-rotation.*` namespace.
@@ -59,6 +60,25 @@ Route::middleware(['web', 'auth', EnsurePasswordIsNotExpired::class])->group(fun
     // your protected app
 });
 ```
+
+## Bypassing rotation per request (SSO)
+
+To exempt some users from the forced change (e.g. SSO users whose password is
+owned by the identity provider), register a bypass callback in a service
+provider's `boot()` — never in config (a closure breaks `config:cache`):
+
+```php
+use BBSLab\LaravelPasswordRotation\Facades\PasswordRotation;
+use Illuminate\Http\Request;
+
+PasswordRotation::bypass(
+    fn (Request $request) => $request->hasSession() && $request->session()->get('sso') === true,
+);
+```
+
+The callback gets the request and the expired user; returning `true` lets the
+request through. Guard `hasSession()` before reading the session for non-`web`
+mounts. Several callbacks may be registered — any `true` exempts the request.
 
 ## Preventing reuse
 

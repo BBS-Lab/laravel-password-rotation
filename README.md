@@ -101,6 +101,32 @@ change form POSTs to a different route, that route too) or the user is trapped
 with no way out. The middleware reads the default guard's user; on a custom
 guard, wire it accordingly.
 
+### Bypass rotation per request (e.g. SSO users)
+
+Some users must never be forced through the local change screen — SSO users, for
+instance, whose password lives in the identity provider. Register a bypass
+callback via the `PasswordRotation` facade (in a service provider's `boot()`).
+It receives the request and the expired user, and returning `true` lets that
+request through:
+
+```php
+use BBSLab\LaravelPasswordRotation\Facades\PasswordRotation;
+use Illuminate\Http\Request;
+
+PasswordRotation::bypass(
+    fn (Request $request) => $request->hasSession()
+        && $request->session()->get('sso') === true,
+);
+```
+
+- Register the callback in code, **not** in the config file — a `Closure` there
+  would break `php artisan config:cache`.
+- Guard `hasSession()` before reading the session so the callback is safe if the
+  middleware ever runs outside the `web` group (a token/API guard has no
+  session). Store the SSO marker as a real boolean (`session(['sso' => true])`).
+- `bypass()` may be called several times; the request is exempt as soon as any
+  callback returns `true`.
+
 ### Prevent password reuse
 
 Add the `PasswordNotReused` rule to your change-password validation:

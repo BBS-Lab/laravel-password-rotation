@@ -3,7 +3,9 @@
 declare(strict_types=1);
 
 use BBSLab\LaravelPasswordRotation\Contracts\MustRotatePassword;
+use BBSLab\LaravelPasswordRotation\Facades\PasswordRotation;
 use BBSLab\LaravelPasswordRotation\Http\Middleware\EnsurePasswordIsNotExpired;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Workbench\App\Models\User;
 use Workbench\Database\Factories\AdminFactory;
@@ -117,4 +119,52 @@ it('still traps an expired user on a non-exempted route', function (): void {
     $this->actingAs(expiredUser())
         ->get('/home')
         ->assertRedirect(route('password.rotate'));
+});
+
+it('lets an expired user through when a bypass callback returns true', function (): void {
+    PasswordRotation::bypass(fn (): bool => true);
+
+    $this->actingAs(expiredUser())
+        ->get('/home')
+        ->assertOk()
+        ->assertSee('home');
+});
+
+it('still redirects an expired user when the bypass callback returns false', function (): void {
+    PasswordRotation::bypass(fn (): bool => false);
+
+    $this->actingAs(expiredUser())
+        ->get('/home')
+        ->assertRedirect(route('password.rotate'));
+});
+
+it('bypasses as soon as any registered callback returns true', function (): void {
+    PasswordRotation::bypass(fn (): bool => false);
+    PasswordRotation::bypass(fn (): bool => true);
+
+    $this->actingAs(expiredUser())
+        ->get('/home')
+        ->assertOk()
+        ->assertSee('home');
+});
+
+it('hands the request and the expired user to the bypass callback (SSO recipe)', function (): void {
+    config(['session.driver' => 'array']);
+
+    $received = null;
+
+    PasswordRotation::bypass(function (Request $request, MustRotatePassword $user) use (&$received): bool {
+        $received = [$request, $user];
+
+        return $request->session()->get('sso') === true;
+    });
+
+    $this->actingAs(expiredUser())
+        ->withSession(['sso' => true])
+        ->get('/home')
+        ->assertOk()
+        ->assertSee('home');
+
+    expect($received[0])->toBeInstanceOf(Request::class)
+        ->and($received[1])->toBeInstanceOf(MustRotatePassword::class);
 });

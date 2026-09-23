@@ -26,6 +26,14 @@ class LaravelPasswordRotationServiceProvider extends PackageServiceProvider
             ->hasCommand(PasswordRotationReport::class);
     }
 
+    public function packageRegistered(): void
+    {
+        // Shared runtime config point (bypass and future callbacks). A singleton
+        // so the facade and the middleware talk to the same instance; callbacks
+        // registered in a host's boot() therefore reach the middleware.
+        $this->app->singleton(PasswordRotationManager::class);
+    }
+
     public function packageBooted(): void
     {
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'laravel-password-rotation');
