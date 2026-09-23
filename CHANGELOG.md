@@ -2,6 +2,16 @@
 
 All notable changes to `laravel-password-rotation` will be documented in this file.
 
+## v1.2.1 - 2026-09-23
+
+Patch release — CI/static-analysis only, **no runtime change**. Fully compatible with `v1.2.0`.
+
+### 🐛 Fixed
+
+- **PHPStan on the latest larastan (3.12).** larastan 3.12 narrows the `password-rotation:report` command's model loop to `MustRotatePassword&Model` via its `is_a()` guards, which made an `assert()` provably always-true and failed the `PHPStan` job. The assert was a runtime no-op and has been removed.
+
+**Full Changelog**: https://github.com/BBS-Lab/laravel-password-rotation/compare/v1.2.0...v1.2.1
+
 ## v1.2.0 - 2026-09-23
 
 Register a callback to exempt specific requests from the forced password change — for example **SSO users** whose password is managed by the identity provider. Backward compatible.
