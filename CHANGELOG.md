@@ -2,6 +2,16 @@
 
 All notable changes to `laravel-password-rotation` will be documented in this file.
 
+## v1.2.0 - 2026-09-23
+
+Register a callback to exempt specific requests from the forced password change — for example **SSO users** whose password is managed by the identity provider. Backward compatible.
+
+### ✨ Added
+
+- **`PasswordRotation` facade** — `PasswordRotation::bypass(fn (Request $request) => ...)` registers a runtime bypass the `EnsurePasswordIsNotExpired` middleware consults **before redirecting** an expired user. Backed by a container-singleton manager, so callbacks survive `config:cache` and stay test-isolated; register several and any returning `true` exempts the request.
+
+**Full Changelog**: https://github.com/BBS-Lab/laravel-password-rotation/compare/v1.1.0...v1.2.0
+
 ## v1.1.0 - 2026-07-23
 
 The `password_histories` table now migrates automatically — no manual publish + migrate step. Backward compatible.
