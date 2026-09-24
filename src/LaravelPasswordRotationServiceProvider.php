@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace BBSLab\LaravelPasswordRotation;
 
+use BBSLab\LaravelForceTwoFactor\Facades\ForceTwoFactor;
 use BBSLab\LaravelPasswordRotation\Console\Commands\PasswordRotationReport;
+use BBSLab\LaravelPasswordRotation\Contracts\MustRotatePassword;
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Http\Request;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -50,5 +54,23 @@ class LaravelPasswordRotationServiceProvider extends PackageServiceProvider
                 'migrations/'.date('Y_m_d_His').'_add_password_changed_at_to_users_table.php'
             ),
         ], 'laravel-password-rotation-user-migration');
+
+        $this->registerForcedTwoFactorBypass();
+    }
+
+    /**
+     * When bbs-lab/laravel-force-two-factor is installed, exempt a user who still
+     * owes a forced password rotation from forced 2FA enrolment, so the rotation
+     * runs first (avoiding a set-up <-> rotate redirect loop). Mirrors the rotation
+     * middleware's own redirect condition. A no-op when that package is absent.
+     */
+    protected function registerForcedTwoFactorBypass(): void
+    {
+        if (class_exists(ForceTwoFactor::class)) {
+            ForceTwoFactor::bypass(fn (Request $request, Authenticatable $user): bool => (bool) config('laravel-password-rotation.enabled')
+                && $user instanceof MustRotatePassword
+                && $user->passwordHasExpired()
+                && ! app(PasswordRotationManager::class)->shouldBypass($request, $user));
+        }
     }
 }

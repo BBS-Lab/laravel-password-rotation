@@ -2,6 +2,12 @@
 
 All notable changes to `laravel-password-rotation` will be documented in this file.
 
+## v1.3.0 - 2026-09-24
+
+### ✨ Added
+
+- Optional integration with [bbs-lab/laravel-force-two-factor](https://github.com/BBS-Lab/laravel-force-two-factor): when that package is installed, a user who still owes a forced password rotation is automatically exempted from forced 2FA enrolment, so **rotation runs before 2FA** (no set-up ⇄ rotate redirect loop). Mirrors the rotation middleware's own redirect condition, and is a no-op when the package is absent (soft `class_exists` integration, no new hard dependency).
+
 ## v1.2.1 - 2026-09-23
 
 Patch release — CI/static-analysis only, **no runtime change**. Fully compatible with `v1.2.0`.

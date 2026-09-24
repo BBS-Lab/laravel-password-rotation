@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "210a3dda0420c502add34666a8b1c25a",
+    "content-hash": "2d2d7da0db976d01fc4e94f1f3c8d702",
     "packages": [
         {
             "name": "brick/math",
@@ -5901,6 +5901,81 @@
     ],
     "packages-dev": [
         {
+            "name": "bbs-lab/laravel-force-two-factor",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/BBS-Lab/laravel-force-two-factor.git",
+                "reference": "41b9fee5fa7b8468da99de87f101e7173e152698"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/BBS-Lab/laravel-force-two-factor/zipball/41b9fee5fa7b8468da99de87f101e7173e152698",
+                "reference": "41b9fee5fa7b8468da99de87f101e7173e152698",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^11.0 || ^12.0 || ^13.0",
+                "illuminate/http": "^11.0 || ^12.0 || ^13.0",
+                "illuminate/support": "^11.0 || ^12.0 || ^13.0",
+                "php": "^8.2",
+                "spatie/laravel-package-tools": "^1.16"
+            },
+            "require-dev": {
+                "larastan/larastan": "^3.0",
+                "laravel/pint": "^1.18",
+                "nunomaduro/collision": "^8.0",
+                "orchestra/testbench": "^9.0 || ^10.0 || ^11.0",
+                "pestphp/pest": "^4.0",
+                "pestphp/pest-plugin-arch": "^4.0",
+                "pestphp/pest-plugin-laravel": "^4.0",
+                "pestphp/pest-plugin-mutate": "^4.0",
+                "phpstan/extension-installer": "^1.4",
+                "phpstan/phpstan-deprecation-rules": "^2.0",
+                "phpstan/phpstan-phpunit": "^2.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "BBSLab\\LaravelForceTwoFactor\\LaravelForceTwoFactorServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "BBSLab\\LaravelForceTwoFactor\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "BBS",
+                    "email": "paris@big-boss-studio.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Admin-panel-agnostic core for forcing two-factor authentication in any Laravel app: a shared bypass registry (compose several \"skip 2FA\" reasons) that the nova-force-two-factor and filament-force-two-factor adapters enforce.",
+            "homepage": "https://github.com/BBS-Lab/laravel-force-two-factor",
+            "keywords": [
+                "2fa",
+                "Authentication",
+                "MFA",
+                "bbs",
+                "laravel",
+                "security",
+                "two-factor"
+            ],
+            "support": {
+                "issues": "https://github.com/BBS-Lab/laravel-force-two-factor/issues",
+                "source": "https://github.com/BBS-Lab/laravel-force-two-factor/tree/v1.0.0"
+            },
+            "time": "2026-09-24T10:04:56+00:00"
+        },
+        {
             "name": "brianium/paratest",
             "version": "v7.20.0",
             "source": {
@@ -7412,25 +7487,25 @@
         },
         {
             "name": "orchestra/testbench",
-            "version": "v11.2.0",
+            "version": "v11.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/orchestral/testbench.git",
-                "reference": "a326be05fc2375b6240b4ab5279a796e05b6d535"
+                "reference": "7081895e5bbbdf2fd333fdf34e8ddec6cd4db713"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/orchestral/testbench/zipball/a326be05fc2375b6240b4ab5279a796e05b6d535",
-                "reference": "a326be05fc2375b6240b4ab5279a796e05b6d535",
+                "url": "https://api.github.com/repos/orchestral/testbench/zipball/7081895e5bbbdf2fd333fdf34e8ddec6cd4db713",
+                "reference": "7081895e5bbbdf2fd333fdf34e8ddec6cd4db713",
                 "shasum": ""
             },
             "require": {
                 "composer-runtime-api": "^2.2",
                 "fakerphp/faker": "^1.23",
-                "laravel/framework": "^13.23.0",
+                "laravel/framework": "^13.32.0",
                 "mockery/mockery": "^1.6.10",
-                "orchestra/testbench-core": "^11.4.0",
-                "orchestra/workbench": "^11.2.0",
+                "orchestra/testbench-core": "^11.5.0",
+                "orchestra/workbench": "^11.3.0",
                 "php": "^8.3",
                 "phpunit/phpunit": "^11.5.50|^12.5.8|^13.0.0",
                 "symfony/process": "^7.4.5|^8.0.5",
@@ -7461,9 +7536,9 @@
             ],
             "support": {
                 "issues": "https://github.com/orchestral/testbench/issues",
-                "source": "https://github.com/orchestral/testbench/tree/v11.2.0"
+                "source": "https://github.com/orchestral/testbench/tree/v11.3.0"
             },
-            "time": "2026-08-11T11:26:50+00:00"
+            "time": "2026-09-24T07:19:57+00:00"
         },
         {
             "name": "orchestra/testbench-core",
@@ -7560,16 +7635,16 @@
         },
         {
             "name": "orchestra/workbench",
-            "version": "v11.2.0",
+            "version": "v11.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/orchestral/workbench.git",
-                "reference": "78f27959b8e5caa72c996c6ccd0ddfeff462cb2b"
+                "reference": "660046639af4538d6c56373c9222ca4c93055c42"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/orchestral/workbench/zipball/78f27959b8e5caa72c996c6ccd0ddfeff462cb2b",
-                "reference": "78f27959b8e5caa72c996c6ccd0ddfeff462cb2b",
+                "url": "https://api.github.com/repos/orchestral/workbench/zipball/660046639af4538d6c56373c9222ca4c93055c42",
+                "reference": "660046639af4538d6c56373c9222ca4c93055c42",
                 "shasum": ""
             },
             "require": {
@@ -7581,7 +7656,7 @@
                 "nunomaduro/collision": "^8.9",
                 "orchestra/canvas": "^11.0.1",
                 "orchestra/sidekick": "~1.1.23|~1.2.20",
-                "orchestra/testbench-core": "^11.1.0",
+                "orchestra/testbench-core": "^11.5.0",
                 "php": "^8.3",
                 "symfony/process": "^7.4|^8.0",
                 "symfony/yaml": "^7.4|^8.0"
@@ -7621,9 +7696,9 @@
             ],
             "support": {
                 "issues": "https://github.com/orchestral/workbench/issues",
-                "source": "https://github.com/orchestral/workbench/tree/v11.2.0"
+                "source": "https://github.com/orchestral/workbench/tree/v11.3.0"
             },
-            "time": "2026-07-22T09:55:13+00:00"
+            "time": "2026-09-23T23:52:50+00:00"
         },
         {
             "name": "pestphp/pest",

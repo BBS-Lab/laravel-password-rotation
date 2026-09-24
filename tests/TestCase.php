@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace BBSLab\LaravelPasswordRotation\Tests;
 
+use BBSLab\LaravelForceTwoFactor\LaravelForceTwoFactorServiceProvider;
 use BBSLab\LaravelPasswordRotation\LaravelPasswordRotationServiceProvider;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
@@ -23,6 +24,9 @@ abstract class TestCase extends Orchestra
     protected function getPackageProviders($app): array
     {
         return [
+            // The forced-2FA base: binds the TwoFactorManager registry so the
+            // package's boot-time bypass registration has somewhere to land.
+            LaravelForceTwoFactorServiceProvider::class,
             LaravelPasswordRotationServiceProvider::class,
             // The demo provider (views + config wiring) so the workbench routes
             // it backs can be exercised end to end, same as under `composer serve`.
